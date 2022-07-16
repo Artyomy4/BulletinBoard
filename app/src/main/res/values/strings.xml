@@ -1,0 +1,55 @@
+<resources>
+    <string name="app_name">DDSKot</string>
+    <string name="ad_id">ca-app-pub-3940256099942544/6300978111</string>
+    <string name="ad_inter_id">ca-app-pub-3940256099942544/1033173712</string>
+    <!-- Menu Drawer Strings -->
+    <string name="ad_cat1">Объявления</string>
+    <string name="ad_my_ads">Мои объявления</string>
+    <string name="ad_car">Машины</string>
+    <string name="ad_pc">Компьютеры</string>
+    <string name="ad_smartphone">Смартфоны</string>
+    <string name="ad_dm">Бытовая техника</string>
+    <string name="ad_cat2">Аккаует</string>
+    <string name="ac_sign_up">Регистрация</string>
+    <string name="ac_sign_in">Вход</string>4
+    <string name="ac_sign_out">Выход</string>
+    <string name="open">open</string>
+    <string name="close">close</string>
+    <string name="not_reg">Войдите или зарегистрируйтесь!</string>
+    <!-- Sign Dialog -->
+    <string name="email_hint">Email</string>
+    <string name="email_reset_was_sent">Письмо для восстановления отправлено на ваш Email</string>
+    <string name="dialog_reset_email_message">Для восстановления пароля укажите Email адрес</string>
+    <string name="password_hint">Password</string>
+    <string name="sign_up_action">Зарегистрироваться</string>
+    <string name="sign_in_action">Войти</string>
+    <string name="forget_password">Забыли пароль?</string>
+    <string name="sign_up_error">Не удалось зарегистрироваться</string>
+    <string name="sign_in_error">Не удалось войти</string>
+    <string name="send_verification_error">Не удалось отправить Email длф подтверждения</string>
+    <string name="send_verification_done">На вашу почту была отправленна ссылка для подтверждения
+        вашего аккаунта, пожалуйста подтвердите ваш аккаунт</string>
+    <!-- Edit Activity -->
+    <string name="selrct_country">*Выберите страну</string>
+    <string name="selrct_city">*Выберите город</string>
+    <string name="Country">Страна</string>
+    <string name="City">Город</string>
+    <string name="Index">*Индекс</string>
+    <string name="Tel">Телефон</string>
+    <string name="Tel_number">*Номер телефона</string>
+    <string name="select_category">*Выберите категолрию</string>
+    <string name="category">Категория</string>
+    <string name="title">Заголовок</string>
+    <string name="title_hint">*Название объявления</string>
+    <string name="price">Цена</string>
+    <string name="price_hint">*Укажите цену</string>
+    <string name="description">Описание</string>
+    <string name="description_hint">Описание</string>
+    <string name="with_send">С отправкой</string>
+    <string name="send">Отправка</string>
+    <string name="publish">Опубликовать</string>
+    <!-- Ad list item -->
+    <string name="price_desc">Цена:</string>
+    <string name="def">Разное</string>
+
+</resources>

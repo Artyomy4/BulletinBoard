@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "1099153902873",
+    "firebase_url": "https://ddskot-b2737-default-rtdb.asia-southeast1.firebasedatabase.app",
+    "project_id": "ddskot-b2737",
+    "storage_bucket": "ddskot-b2737.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1099153902873:android:776c5974d7950292788988",
+        "android_client_info": {
+          "package_name": "com.teempton.DDSKot"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1099153902873-fmdm3gvr4gvuinlfgga7rhhg8i5vrco6.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyA_IWxegvjWXXo6F3lh2QIVZKGqZKMdX0g"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1099153902873-fmdm3gvr4gvuinlfgga7rhhg8i5vrco6.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
