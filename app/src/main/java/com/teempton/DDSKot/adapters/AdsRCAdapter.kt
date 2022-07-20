@@ -14,13 +14,21 @@ import com.teempton.DDSKot.act.DescriptionActivity
 import com.teempton.DDSKot.act.EditAdsAct
 import com.teempton.DDSKot.model.Ad
 import com.teempton.DDSKot.databinding.AddListItemBinding
+import java.text.SimpleDateFormat
+import java.util.*
+import kotlin.collections.ArrayList
 
 class AdsRCAdapter(val act: MainActivity) : RecyclerView.Adapter<AdsRCAdapter.AdHolder>() {
     val adArray = ArrayList<Ad>()
+    private var timeFormatter: SimpleDateFormat?=null
+
+    init {
+        timeFormatter = SimpleDateFormat("dd/MM/yyyy hh:mm", Locale.getDefault())
+    }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): AdHolder {
         val binding = AddListItemBinding.inflate(LayoutInflater.from(parent.context), parent, false)
-        return AdHolder(binding, act)
+        return AdHolder(binding, act, timeFormatter!!)
     }
 
     override fun onBindViewHolder(holder: AdHolder, position: Int) {
@@ -48,7 +56,7 @@ class AdsRCAdapter(val act: MainActivity) : RecyclerView.Adapter<AdsRCAdapter.Ad
         adArray.addAll(newList)
     }
 
-    class AdHolder(val binding: AddListItemBinding, val act: MainActivity) :
+    class AdHolder(val binding: AddListItemBinding, val act: MainActivity, val formatter:SimpleDateFormat) :
         RecyclerView.ViewHolder(binding.root) {
 
         fun setData(ad: Ad) = with(binding) {
@@ -57,11 +65,19 @@ class AdsRCAdapter(val act: MainActivity) : RecyclerView.Adapter<AdsRCAdapter.Ad
             tvTitle.text = ad.title
             tvViewCounter.text = ad.viewsCounter
             tvFavCounter.text = ad.favCounter
+            val publishTime = "Время публикации: ${getTimeFromMillis(ad.time)}"
+            tvPublishTime.text = publishTime
             Picasso.get().load(ad.mainImage).into(mainImage)//загрузка картинки на основной экран объявления
 
             isFav(ad)
             mainOnClick(ad)
             showEditPanel(isOwner(ad))
+        }
+
+        private fun getTimeFromMillis(timeMillis:String): String {
+            val c = Calendar.getInstance()
+            c.timeInMillis = timeMillis.toLong()
+            return formatter.format(c.time)
         }
 
         private fun mainOnClick(ad: Ad) {

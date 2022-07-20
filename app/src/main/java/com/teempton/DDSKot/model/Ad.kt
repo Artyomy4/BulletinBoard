@@ -8,7 +8,7 @@ data class Ad(
     val tel:String?=null,
     val index:String?=null,
     val withSend:String?=null,
-    val cayrgory:String?=null,
+    val category:String?=null,
     val title:String?=null,
     val price:String?=null,
     val description:String?=null,

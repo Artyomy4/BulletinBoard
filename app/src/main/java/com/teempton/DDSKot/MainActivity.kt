@@ -5,10 +5,14 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.text.SpannableString
 import android.text.style.ForegroundColorSpan
+import android.view.Menu
 import android.view.MenuItem
 import android.view.View
 import android.widget.TextView
 import android.widget.Toast
+import androidx.activity.result.ActivityResultLauncher
+import androidx.activity.result.contract.ActivityResultContracts
+import androidx.activity.result.registerForActivityResult
 import androidx.activity.viewModels
 import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.core.content.ContextCompat
@@ -22,11 +26,13 @@ import com.google.firebase.ktx.Firebase
 import com.teempton.DDSKot.accounthelper.AccountHelper
 import com.teempton.DDSKot.act.DescriptionActivity
 import com.teempton.DDSKot.act.EditAdsAct
+import com.teempton.DDSKot.act.FilterActivity
 import com.teempton.DDSKot.adapters.AdsRCAdapter
 import com.teempton.DDSKot.databinding.ActivityMainBinding
 import com.teempton.DDSKot.dialoghelper.DialogConst
 import com.teempton.DDSKot.dialoghelper.DialogHelper
 import com.teempton.DDSKot.model.Ad
+import com.teempton.DDSKot.utils.FilterManager
 import com.teempton.DDSKot.viewmodel.FirebaseViewModel
 
 class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener,
@@ -43,6 +49,10 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
     val adapter = AdsRCAdapter(this)
     private val firebaseViewModel: FirebaseViewModel by viewModels()
 
+    private var currentCategory:String?=null
+    private var filter:String = "empty"
+    private var filterDb:String = ""
+    lateinit var filterLauncher:ActivityResultLauncher<Intent>
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -55,7 +65,14 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         initViewModel()
         bottomMenuOnClick()
         scrollListener()
+        onActivityResultFilter()
     }
+
+    override fun onCreateOptionsMenu(menu: Menu): Boolean {
+        menuInflater.inflate(R.menu.main_menu, menu)
+        return super.onCreateOptionsMenu(menu)
+    }
+
 
     //чтобы высвечивлся home после возврата
     override fun onResume() {
@@ -66,8 +83,27 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
 
     //прослушиваем нажате на кнопку меню
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
-
+        if (item.itemId==R.id.id_filter){
+            val i = Intent(this@MainActivity,FilterActivity::class.java).apply {
+                putExtra(FilterActivity.FILTER_KEY, filter)
+            }
+                filterLauncher.launch(i)
+        }
         return super.onOptionsItemSelected(item)
+    }
+
+
+    private fun onActivityResultFilter(){
+        filterLauncher = registerForActivityResult(
+            ActivityResultContracts.StartActivityForResult()){
+            if (it.resultCode== RESULT_OK){
+                filter = it.data?.getStringExtra(FilterActivity.FILTER_KEY)!!
+                filterDb = FilterManager.getFilter(filter)
+            }else if (it.resultCode== RESULT_CANCELED){
+                filterDb = ""
+                filter = ""
+            }
+        }
     }
 
     override fun onStart() {
@@ -77,17 +113,33 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
 
     //в этой функции происъодит отслеживание изменений и доступности активити
     private fun initViewModel() {
+
         firebaseViewModel.liveAdsData.observe(this) {
+            val list = getAdsByCategory(it)
             if (!clearUpdate) {
-                adapter.updateAdapter(it)
+                adapter.updateAdapter(list)
             } else {
-                adapter.updateAdapterWithClear(it)
+                adapter.updateAdapterWithClear(list)
             }
             binding.mainContent.tvEmpty.visibility = if (adapter.itemCount == 0 ) View.VISIBLE else View.GONE
         }
     }
 
+    private fun getAdsByCategory(list:ArrayList<Ad>):ArrayList<Ad>{
+        val tempList = ArrayList<Ad>()
+        tempList.addAll(list)
+        if (currentCategory!=getString(R.string.def)){
+            tempList.clear()
+            list.forEach{
+                if (currentCategory==it.category)tempList.add(it)
+            }
+        }
+        tempList.reverse()
+        return tempList
+    }
+
     private fun init() {
+        currentCategory = getString(R.string.def)
         //установка кнопки эдит адс
         setSupportActionBar(binding.mainContent.toolbar)
         navViewSettings()
@@ -121,7 +173,8 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                     firebaseViewModel.loadMyFavs()
                 }
                 R.id.id_home -> {
-                    firebaseViewModel.loadAllAds("0")
+                    currentCategory = getString(R.string.def)
+                    firebaseViewModel.loadAllAdsFirstPage(filterDb)
                     mainContent.toolbar.title = getString(R.string.def)
                 }
             }
@@ -143,16 +196,16 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                 Toast.makeText(this, "Нажата кнопка", Toast.LENGTH_LONG).show()
             }
             R.id.id_car -> {
-                Toast.makeText(this, "Нажата кнопка", Toast.LENGTH_LONG).show()
+                getAdsFromCat(getString(R.string.ad_car))
             }
             R.id.id_pc -> {
-                Toast.makeText(this, "Нажата кнопка", Toast.LENGTH_LONG).show()
+                getAdsFromCat(getString(R.string.ad_pc))
             }
             R.id.id_smart -> {
-                Toast.makeText(this, "Нажата кнопка", Toast.LENGTH_LONG).show()
+                getAdsFromCat(getString(R.string.ad_smartphone))
             }
             R.id.id_dm -> {
-                Toast.makeText(this, "Нажата кнопка", Toast.LENGTH_LONG).show()
+                getAdsFromCat(getString(R.string.ad_dm))
             }
             R.id.id_sign_up -> {
                 dialogHelper.createSignDialog(DialogConst.SIGN_UP_SATE)
@@ -173,6 +226,11 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         return true
     }
 
+    private fun getAdsFromCat(cat:String){
+        currentCategory = cat
+        firebaseViewModel.loadAllAdsFromCat(cat, filterDb)
+    }
+
     //изменение надписи в хедере
     fun uiUpdate(user: FirebaseUser?) {
         if (user == null) {
@@ -185,7 +243,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         } else if (user.isAnonymous) {
             tvAccaunt.text = "Гость"
         } else {
-            user.email
+            tvAccaunt.text = user.email
         }
     }
 
@@ -230,11 +288,23 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                     clearUpdate = false
                     val adsList = firebaseViewModel.liveAdsData.value!!
                     if (adsList.isNotEmpty()){
-                    adsList[adsList.size-1].let { firebaseViewModel.loadAllAds(it.time) }}
+                        getAdsFromCat(adsList)
+                    }
                 }
                 }
         })
     }
+
+    private fun getAdsFromCat(adsList:ArrayList<Ad>){
+        adsList[0].let {
+            if (currentCategory == getString(R.string.def)) {
+                firebaseViewModel.loadAllAdsNextPage(it.time, filterDb)
+            } else {
+                firebaseViewModel.loadAllAdsFromCatNextPage(it.category!!, it.time,filterDb)
+            }
+        }
+    }
+
 
     companion object {
         const val EDIT_STATE = "edit_state"

@@ -48,7 +48,7 @@ class DialogHelper(val act:MainActivity) {
                 rootDialogElement.edSignPassword.text.toString())
         }else {
             //вход в аккаунт
-            accHelper.signInWhithEmail(rootDialogElement.edSignEmail.text.toString(),
+            accHelper.signInWithEmail(rootDialogElement.edSignEmail.text.toString(),
                 rootDialogElement.edSignPassword.text.toString())
         }
     }

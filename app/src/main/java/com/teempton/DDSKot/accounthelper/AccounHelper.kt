@@ -47,7 +47,7 @@ class AccountHelper(val act: MainActivity) {
     }
 
     //вход в аккаунт
-    fun signInWhithEmail(email: String, password: String) {
+    fun signInWithEmail(email: String, password: String) {
         if (email.isNotEmpty() && password.isNotEmpty()) {
             act.mAuth.currentUser?.delete()?.addOnCompleteListener { task ->
                 if (task.isSuccessful) {

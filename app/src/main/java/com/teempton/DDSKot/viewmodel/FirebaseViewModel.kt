@@ -8,13 +8,39 @@ import com.teempton.DDSKot.model.DbManager
 class FirebaseViewModel:ViewModel() {
     private val dbManager = DbManager()
     val liveAdsData = MutableLiveData<ArrayList<Ad>>()
-    fun loadAllAds(lastTime:String){
-        dbManager.getAllAds(lastTime, object : DbManager.ReadDataCallBack {
+
+    fun loadAllAdsFirstPage(filter:String){
+        dbManager.getAllAdsFirstPage(filter, object : DbManager.ReadDataCallBack {
             override fun readData(list: ArrayList<Ad>) {
                 liveAdsData.value = list
             }
         })
     }
+
+    fun loadAllAdsNextPage(time:String, filter: String){
+        dbManager.getAllAdsNextPage(time,filter, object : DbManager.ReadDataCallBack {
+            override fun readData(list: ArrayList<Ad>) {
+                liveAdsData.value = list
+            }
+        })
+    }
+
+    fun loadAllAdsFromCat(cat:String, filter: String){
+        dbManager.getAllAdsFromCatFirstPage(cat, filter,object : DbManager.ReadDataCallBack {
+            override fun readData(list: ArrayList<Ad>) {
+                liveAdsData.value = list
+            }
+        })
+    }
+
+    fun loadAllAdsFromCatNextPage(cat:String,time:String, filter: String){
+        dbManager.getAllAdsFromCatNextPage(cat,time, filter, object : DbManager.ReadDataCallBack {
+            override fun readData(list: ArrayList<Ad>) {
+                liveAdsData.value = list
+            }
+        })
+    }
+
 
     fun onFavClick(ad: Ad){
         dbManager.onFavClick(ad, object: DbManager.FinishWorkListener{

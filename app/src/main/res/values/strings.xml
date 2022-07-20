@@ -51,5 +51,7 @@
     <!-- Ad list item -->
     <string name="price_desc">Цена:</string>
     <string name="def">Разное</string>
+    <string name="filter_bt">Применить фильтр</string>
+    <string name="btClear">Очитстить фильтр</string>
 
 </resources>
