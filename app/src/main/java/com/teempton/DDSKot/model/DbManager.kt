@@ -7,11 +7,11 @@ import com.google.firebase.database.Query
 import com.google.firebase.database.ValueEventListener
 import com.google.firebase.database.ktx.database
 import com.google.firebase.ktx.Firebase
+import com.google.firebase.storage.ktx.storage
 
 class DbManager {
     val db = Firebase.database.getReference(MAIN_NODE)
-
-    //val db = Firebase.database("https://ddskot-b2737-default-rtdb.asia-southeast1.firebasedatabase.app").reference
+    val dbStorege = Firebase.storage.getReference(MAIN_NODE)
     val auth = Firebase.auth
 
     fun publishAd(ad: Ad, finishWorkListener: FinishWorkListener) {
@@ -65,8 +65,9 @@ class DbManager {
         readDataFromDb(query, readDataCallBack)
     }
 
-    fun getAllAds(readDataCallBack: ReadDataCallBack?) {
-        val query = db.orderByChild(auth.uid + "/ad/price")
+    fun getAllAds(lastTime:String, readDataCallBack: ReadDataCallBack?) {
+        val query = db.orderByChild(auth.uid + "/ad/time")
+            .startAfter(lastTime).limitToFirst(ADS_LIMIT)
         readDataFromDb(query, readDataCallBack)
     }
 
@@ -121,6 +122,7 @@ class DbManager {
         const val INFO_NODE = "info"
         const val MAIN_NODE = "main"
         const val FAVS_NODE = "favs"
+        const val ADS_LIMIT = 2
     }
 }
 

@@ -4,9 +4,6 @@ import android.content.Context
 import android.graphics.Bitmap
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import android.widget.ImageButton
-import android.widget.ImageView
-import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.teempton.DDSKot.R
 import com.teempton.DDSKot.act.EditAdsAct
@@ -66,7 +63,7 @@ class SelectImageRVAdapter(val adapterCallBack: AdapterCallBack) :
             }
 
             viewBinding.imEditImage.setOnClickListener {
-                ImagePicker.launcher(context as EditAdsAct, context.launcherSingleSelectImage, 1)
+                ImagePicker.getSingleImage(context as EditAdsAct)
                 context.editImagePos = adapterPosition
             }
             viewBinding.tvTitle.text =

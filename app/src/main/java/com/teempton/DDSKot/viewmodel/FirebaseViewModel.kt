@@ -8,8 +8,8 @@ import com.teempton.DDSKot.model.DbManager
 class FirebaseViewModel:ViewModel() {
     private val dbManager = DbManager()
     val liveAdsData = MutableLiveData<ArrayList<Ad>>()
-    fun loadAllAds(){
-        dbManager.getAllAds(object : DbManager.ReadDataCallBack {
+    fun loadAllAds(lastTime:String){
+        dbManager.getAllAds(lastTime, object : DbManager.ReadDataCallBack {
             override fun readData(list: ArrayList<Ad>) {
                 liveAdsData.value = list
             }

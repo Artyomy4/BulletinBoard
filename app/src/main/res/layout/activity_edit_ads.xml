@@ -35,6 +35,17 @@
                     android:layout_height="match_parent"
                     android:layout_margin="5dp">
 
+                    <TextView
+                        android:id="@+id/tvImageCounter"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:background="@color/black"
+                        android:padding="5dp"
+                        android:text="1/3"
+                        android:textColor="@color/white"
+                        app:layout_constraintBottom_toBottomOf="@+id/vpimages"
+                        app:layout_constraintEnd_toEndOf="@+id/vpimages" />
+
                     <androidx.viewpager2.widget.ViewPager2
                         android:id="@+id/vpimages"
                         android:layout_width="match_parent"
@@ -173,6 +184,27 @@
                         android:ems="10"
                         android:hint="@string/Tel_number"
                         android:inputType="number"
+                        android:textColorHint="@color/grey_dark" />
+
+                    <TextView
+                        android:id="@+id/tvTitleEmail"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="10dp"
+                        android:layout_marginTop="10dp"
+                        android:layout_weight="1"
+                        android:text="@string/email_hint"
+                        android:textColor="@color/green_main"
+                        android:textStyle="bold" />
+
+                    <EditText
+                        android:id="@+id/editEmail"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@null"
+                        android:ems="10"
+                        android:hint="@string/email_hint"
+                        android:inputType="textEmailAddress"
                         android:textColorHint="@color/grey_dark" />
 
                     <LinearLayout
