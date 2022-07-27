@@ -48,6 +48,7 @@ open class BaseAdsFrag:Fragment(), InterAdsClose {
         adView.loadAd(adRequest)
     }
 
+
     private fun loadInterAd(){
         val adRequest = AdRequest.Builder().build()
         InterstitialAd.load(context as Activity,getString(R.string.ad_inter_id), adRequest,object:InterstitialAdLoadCallback(){

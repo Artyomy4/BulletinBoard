@@ -25,6 +25,8 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
 
+
+
 class ImageListFrag(
     private val fragCloseInterface: FragmentCloseInterface) : BaseAdsFrag(), AdapterCallBack {
 
@@ -40,7 +42,7 @@ class ImageListFrag(
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        binding = ListImageFragBinding.inflate(layoutInflater)
+        binding = ListImageFragBinding.inflate(layoutInflater,container,false)
         adView = binding.adView
         return binding.root
     }
